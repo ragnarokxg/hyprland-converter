@@ -1,3 +1,5 @@
+💡 Notice: This script was developed with the assistance of agentic AI coding models. All generated structures, LPeg grammars, and AST translation rules have been thoroughly optimized, reviewed, and validated against the final Hyprland 0.55 Lua specifications for performance and stability.
+
 # Hyprland Config Transpiler (0.55+)
 
 ## Overview
