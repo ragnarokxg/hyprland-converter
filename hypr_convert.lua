@@ -440,6 +440,7 @@ function Emitter.emit(ast)
         close                 = "hl.dsp.window.close",
         killactive            = "hl.dsp.window.close",        -- legacy alias
         kill                  = "hl.dsp.window.kill",
+        forcekillactive       = "hl.dsp.window.kill",
         togglefloating        = "hl.dsp.window.float",  -- 0.55 namespaced
         float                 = "hl.dsp.window.float",  -- alias
         fullscreen            = "hl.dsp.window.fullscreen", -- 0.55 namespaced
