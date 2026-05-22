@@ -70,8 +70,9 @@ bindm = $MOD, mouse:272, movewindow
 bind = $MOD, SLASH, exec, fuzzel
 bind = $MOD SHIFT, E, exec, dolphin
 bind = , XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_SINK@ 5%+
-bind = , Print, exec, grim
-bind = , Caps_Lock, exec, dummy
+binddel = , Print, Take a screenshot, exec, grim
+bindln = , Caps_Lock, exec, dummy
+bindmon = , Menu, exec, rofi
 bind = $MOD, h, movefocus, l
 bind = $MOD, l, movefocus, r
 bind = $MOD SHIFT, h, movewindow, l
@@ -204,6 +205,15 @@ local function require(mod) return {} end
     assert_contains(
         "Bug4 – bindm -> hl.bind() with mouse = true option",
         keybinds_out, "{ mouse = true }")
+    assert_contains(
+        "Bug4 – binddel -> repeating = true, locked = true",
+        keybinds_out, "{ repeating = true, locked = true }")
+    assert_contains(
+        "Bug4 – bindln -> locked = true, non_consuming = true",
+        keybinds_out, "{ locked = true, non_consuming = true }")
+    assert_contains(
+        "Bug4 – bindmon -> mouse = true, long_press = true, non_consuming = true",
+        keybinds_out, "{ mouse = true, long_press = true, non_consuming = true }")
 
     -- Bug 8: dispatcher namespace correctness
     assert_contains(

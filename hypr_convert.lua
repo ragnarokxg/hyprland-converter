@@ -216,13 +216,19 @@ end
 -- Map bind flag letters to the corresponding hl.bind() options table.
 -- Returns a Lua options-table literal string, or nil if no flags present.
 local BIND_FLAG_MAP = {
-    r = "release",
-    e = "repeat",
     l = "locked",
-    m = "mouse",
+    r = "release",
+    c = "click",
+    g = "drag",
+    o = "long_press",
+    e = "repeating",
     n = "non_consuming",
+    m = "mouse",
     t = "transparent",
     i = "ignore_mods",
+    s = "separate",
+    p = "bypass",
+    u = "submap_universal",
 }
 
 -- Lua 5.x reserved words that cannot appear as bare table keys.
