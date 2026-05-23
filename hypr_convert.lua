@@ -429,6 +429,7 @@ function Emitter.emit(ast)
     local exec_once_cmds = {}
     local exec_cmds = {}
     local animation_cmds = {}
+    local gesture_props = {}
     local rule_counter = 1
 
     -- Verified dispatcher translation map (source: 3.7-dispatchers + 04_api_translation.md).
@@ -576,6 +577,8 @@ function Emitter.emit(ast)
         elseif node.type == "property" then
             if node.key == "bezier" or node.key == "animation" then
                 table.insert(animation_cmds, { key = node.key, val_str = stringify_value(node.value), comment = node.comment })
+            elseif parent_name == "gestures" and (node.key == "workspace_swipe" or node.key == "workspace_swipe_fingers" or node.key == "workspace_swipe_min_fingers") then
+                gesture_props[node.key] = { val_str = stringify_value(node.value), comment = node.comment }
             -- Bug A: gestures.gesture is not a valid 0.55 hl.config() key
             elseif parent_name == "gestures" and node.key == "gesture" then
                 local ind = string.rep("    ", indent)
@@ -1150,7 +1153,7 @@ function Emitter.emit(ast)
                     
                     local anim_str = string.format("leaf = %s, enabled = %s, speed = %s", escape_str(leaf), enabled, speed)
                     if bezier ~= "\"\"" and bezier ~= "" then
-                        anim_str = anim_str .. string.format(", bezier = %s", escape_str(bezier))
+                        anim_str = anim_str .. string.format(", curve = %s", escape_str(bezier))
                     end
                     if style ~= "\"\"" and style ~= "" then
                         anim_str = anim_str .. string.format(", style = %s", escape_str(style))
@@ -1161,6 +1164,14 @@ function Emitter.emit(ast)
                     table.insert(out, "-- FIXME: Unrecognized animation format: " .. cmd.val_str)
                 end
             end
+        end
+    end
+
+    if gesture_props["workspace_swipe"] then
+        local swipe_val = coerce_type(gesture_props["workspace_swipe"].val_str)
+        if swipe_val == "true" then
+            local fingers = gesture_props["workspace_swipe_fingers"] and coerce_type(gesture_props["workspace_swipe_fingers"].val_str) or "3"
+            table.insert(out, string.format("hl.gesture({ fingers = %s, direction = \"horizontal\", action = \"workspace\" })", fingers))
         end
     end
 

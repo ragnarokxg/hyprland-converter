@@ -390,6 +390,14 @@ local function require(mod) return {} end
         "Submap – no legacy hl.submap() wrapper",
         main_out, 'hl.submap("resize"')
 
+    -- Gestures uses hl.gesture() outside hl.config()
+    assert_contains(
+        "Gestures – workspace_swipe translated to hl.gesture()",
+        main_out, 'hl.gesture({ fingers = 3')
+    assert_not_contains(
+        "Gestures – workspace_swipe removed from gestures {}",
+        main_out, 'workspace_swipe =')
+
     if assert_pass then
         print("All regression assertions passed.")
     else
